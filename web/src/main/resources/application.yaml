@@ -14,11 +14,12 @@ spring:
 mybatis:
   config-location: classpath:mybatis/mybatis-config.xml
   mapper-locations: classpath:mybatis/mapper/*.xml
-#pagehelper:
-#  helper-dialect: mysql
-#  reasonable: true
-#  support-methods-arguments: true
-#  params: count=countSql
+
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
 
 server:
   port: 8080

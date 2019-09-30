@@ -24,7 +24,13 @@
     <include refid="Base_Column_List" />
     from mmall_category
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <select id="selectCategoryChildrenByParentId" resultType="com.mmall.dao.bean.Category">
+      select
+      <include refid="Base_Column_List"/>
+      from mmall_category
+      where parent_id = #{parentId}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from mmall_category
     where id = #{id,jdbcType=INTEGER}
   </delete>
