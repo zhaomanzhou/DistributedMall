@@ -3,6 +3,7 @@ package com.mmall.dao.bean;
 import java.util.Date;
 
 public class Category {
+//    1111111111
     private Integer id;
 
     private Integer parentId;
