@@ -4,8 +4,9 @@ import com.mmall.dao.bean.Shipping;
 import com.mmall.util.ServerResponse;
 
 /**
- * Created by geely
+ * Created by weiqiang
  */
+
 public interface IShippingService {
 
 //    ServerResponse add(Integer userId, Shipping shipping);

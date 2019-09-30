@@ -5,8 +5,9 @@ import org.springframework.stereotype.Service;
 
 
 /**
- * Created by geely
+ * Created by weiqiang
  */
+
 @Service
 public class ProductServiceImpl implements IProductService {
 

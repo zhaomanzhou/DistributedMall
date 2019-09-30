@@ -2,8 +2,9 @@ package com.mmall.service;
 
 
 /**
- * Created by geely
+ * Created by weiqiang
  */
+
 public interface ICartService {
 //    ServerResponse<Cart> add(Integer userId, Integer productId, Integer count);
 //    ServerResponse<CartVo> update(Integer userId, Integer productId, Integer count);

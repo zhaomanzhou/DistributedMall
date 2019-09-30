@@ -9,8 +9,9 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 /**
- * Created by geely
+ * Created by weiqiang
  */
+
 @Service
 public class UserServiceImpl implements IUserService {
 

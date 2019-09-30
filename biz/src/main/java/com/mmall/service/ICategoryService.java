@@ -7,8 +7,9 @@ import com.mmall.util.ServerResponse;
 import java.util.List;
 
 /**
- * Created by geely
+ * Created by weiqiang
  */
+
 public interface ICategoryService {
 //    ServerResponse addCategory(String categoryName, Integer parentId);
 //    ServerResponse updateCategoryName(Integer categoryId, String categoryName);

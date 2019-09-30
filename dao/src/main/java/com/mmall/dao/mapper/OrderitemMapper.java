@@ -1,4 +1,7 @@
 package com.mmall.dao.mapper;
+/**
+ * Created by weiqiang
+ */
 
 import com.mmall.dao.bean.Orderitem;
 

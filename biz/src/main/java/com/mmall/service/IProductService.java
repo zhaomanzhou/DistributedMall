@@ -4,8 +4,9 @@ package com.mmall.service;
 import com.mmall.util.ServerResponse;
 
 /**
- * Created by geely
+ * Created by weiqiang
  */
+
 public interface IProductService {
 //
 //    ServerResponse saveOrUpdateProduct(Product product);

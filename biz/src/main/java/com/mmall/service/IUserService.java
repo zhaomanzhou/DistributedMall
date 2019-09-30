@@ -5,8 +5,9 @@ import com.mmall.dao.bean.User;
 import com.mmall.util.ServerResponse;
 
 /**
- * Created by geely
+ * Created by weiqiang
  */
+
 public interface IUserService {
 
 //    ServerResponse<User> login(String username, String password);
