@@ -1,10 +1,7 @@
 package com.mmall.control;
 
-import com.mmall.dao.bean.User;
 import com.mmall.service.ICategoryService;
 import com.mmall.service.IUserService;
-import com.mmall.util.Const;
-import com.mmall.util.ResponseCode;
 import com.mmall.util.ServerResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

@@ -20,7 +20,7 @@
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
         <!--制定bean的位置-->
-        <javaModelGenerator targetPackage="com.mmall.dao.bean"
+        <javaModelGenerator targetPackage="com.mmall.bean.bean"
                             targetProject="./dao/src/main/java">
             <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
@@ -32,7 +32,7 @@
         </sqlMapGenerator>
         <!--            制定dao接口生成的位置,mapper接口-->
         <javaClientGenerator type="XMLMAPPER"
-                             targetPackage="com.mmall.dao.mapper"
+                             targetPackage="com.mmall.mapper.mapper"
                              targetProject="./dao/src/main/java">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
