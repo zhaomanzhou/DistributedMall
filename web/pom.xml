@@ -3,8 +3,8 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>com.mmall</artifactId>
-        <groupId>com.mmal</groupId>
+        <artifactId>mmall</artifactId>
+        <groupId>zmz</groupId>
         <version>1.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -12,16 +12,31 @@
     <artifactId>web</artifactId>
 
     <dependencies>
+
         <dependency>
-            <artifactId>common</artifactId>
-            <groupId>com.mmal</groupId>
+            <groupId>zmz</groupId>
+            <artifactId>service</artifactId>
             <version>1.0</version>
         </dependency>
 
         <dependency>
-            <artifactId>core</artifactId>
-            <groupId>com.mmal</groupId>
-            <version>1.0</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.1.8</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
         </dependency>
     </dependencies>
 

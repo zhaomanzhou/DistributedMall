@@ -1,7 +1,6 @@
 package com.mmall.util;
 
 import com.google.common.collect.Sets;
-import org.hibernate.validator.internal.util.CollectionHelper;
 
 import java.util.Set;
 
