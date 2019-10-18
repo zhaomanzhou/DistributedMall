@@ -13,7 +13,7 @@ spring:
       suffix: .html
 mybatis:
   config-location: classpath:mybatis/mybatis-config.xml
-  mapper-locations: classpath:mybatis/com.mmall.mapper/*.xml
+  mapper-locations: classpath:mybatis/com.mmall.mybatis/*.xml
 
 pagehelper:
   helper-dialect: mysql

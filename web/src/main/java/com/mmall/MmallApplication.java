@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan("com.mmall.com.mmall.mapper.com.mmall.mapper")
+@MapperScan("com.mmall.com.mmall.mybatis.com.mmall.mybatis")
 public class MmallApplication {
 
     public static void main(String[] args) {
