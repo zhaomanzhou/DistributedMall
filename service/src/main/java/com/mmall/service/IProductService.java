@@ -6,7 +6,7 @@ import com.mmall.bean.vo.ProductDetailVo;
 import com.mmall.util.ServerResponse;
 
 /**
- * Created by geely
+ * Created by weiqiang
  */
 public interface IProductService {
 

@@ -2,8 +2,8 @@ spring:
   datasource:
     username: root
     password: 123
-    url: jdbc:mysql://120.79.87.220:3306/mmall
-    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/mmall
+    driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
   thymeleaf:
     cache: false
@@ -13,7 +13,7 @@ spring:
       suffix: .html
 mybatis:
   config-location: classpath:mybatis/mybatis-config.xml
-  mapper-locations: classpath:mybatis/com.mmall.mybatis/*.xml
+  mapper-locations: classpath:mybatis/mapper/*.xml
 
 pagehelper:
   helper-dialect: mysql

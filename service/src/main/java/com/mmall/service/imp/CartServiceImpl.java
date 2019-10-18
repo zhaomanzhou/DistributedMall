@@ -16,9 +16,9 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Created by geely
+ * Created by weiqiang
  */
-@Service()
+@Service("iCartService")
 @Slf4j
 public class CartServiceImpl implements ICategoryService {
 

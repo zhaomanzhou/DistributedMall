@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * Created by weiqiang
  */
-@Service
+@Service("iProductService")
 public class ProductServiceImpl implements IProductService {
 
 
