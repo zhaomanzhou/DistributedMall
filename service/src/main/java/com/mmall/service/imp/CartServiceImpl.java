@@ -1,7 +1,6 @@
 package com.mmall.service.imp;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+
 import com.mmall.bean.po.Category;
 import com.mmall.mapper.CategoryMapper;
 import com.mmall.service.ICategoryService;
@@ -12,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -73,11 +74,11 @@ public class CartServiceImpl implements ICategoryService {
      * @return
      */
     public ServerResponse<List<Integer>> selectCategoryAndChildrenById(Integer categoryId){
-        Set<Category> categorySet = Sets.newHashSet();
+        Set<Category> categorySet = new HashSet<>();
         findChildCategory(categorySet,categoryId);
 
 
-        List<Integer> categoryIdList = Lists.newArrayList();
+        List<Integer> categoryIdList = new ArrayList<>();
         if(categoryId != null){
             for(Category categoryItem : categorySet){
                 categoryIdList.add(categoryItem.getId());

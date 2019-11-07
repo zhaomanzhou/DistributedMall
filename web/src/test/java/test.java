@@ -5,6 +5,8 @@
 //import org.mybatis.generator.config.xml.ConfigurationParser;
 //import org.mybatis.generator.internal.DefaultShellCallback;
 
+import com.mmall.util.MD5Util;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,4 +22,8 @@ public class test {
 //        MyBatisGenerator myBatisGenerator = new MyBatisGenerator(config, callback, warnings);
 //        myBatisGenerator.generate(null);
 //    }
+
+    public static void main(String[] args) {
+        System.out.println(MD5Util.MD5EncodeUtf8("123"));
+    }
 }

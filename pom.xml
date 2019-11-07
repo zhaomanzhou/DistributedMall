@@ -21,6 +21,10 @@
         <version>2.1.8.RELEASE</version>
     </parent>
 
+    <dependencies>
+
+
+    </dependencies>
 
     <properties>
         <java.version>1.8</java.version>

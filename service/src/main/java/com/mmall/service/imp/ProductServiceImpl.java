@@ -3,7 +3,6 @@ package com.mmall.service.imp;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.google.common.collect.Lists;
 import com.mmall.bean.po.Category;
 import com.mmall.bean.po.Product;
 import com.mmall.bean.vo.ProductDetailVo;
@@ -129,7 +128,7 @@ public class ProductServiceImpl implements IProductService {
         PageHelper.startPage(pageNum,pageSize);
         List<Product> productList = productMapper.selectList();
 
-        List<ProductListVo> productListVoList = Lists.newArrayList();
+        List<ProductListVo> productListVoList = new ArrayList<>();
         for(Product productItem : productList){
             ProductListVo productListVo = assembleProductListVo(productItem);
             productListVoList.add(productListVo);
@@ -160,7 +159,7 @@ public class ProductServiceImpl implements IProductService {
             productName = new StringBuilder().append("%").append(productName).append("%").toString();
         }
         List<Product> productList = productMapper.selectByNameAndProductId(productName,productId);
-        List<ProductListVo> productListVoList = Lists.newArrayList();
+        List<ProductListVo> productListVoList = new ArrayList<>();
         for(Product productItem : productList){
             ProductListVo productListVo = assembleProductListVo(productItem);
             productListVoList.add(productListVo);
@@ -198,10 +197,11 @@ public class ProductServiceImpl implements IProductService {
             if(category == null && StringUtils.isBlank(keyword)){
                 //没有该分类,并且还没有关键字,这个时候返回一个空的结果集,不报错
                 PageHelper.startPage(pageNum,pageSize);
-                List<ProductListVo> productListVoList = Lists.newArrayList();
+                List<ProductListVo> productListVoList = new ArrayList<>();
                 PageInfo pageInfo = new PageInfo(productListVoList);
                 return ServerResponse.createBySuccess(pageInfo);
             }
+            if (category!=null)
             categoryIdList = iCategoryService.selectCategoryAndChildrenById(category.getId()).getData();
         }
         if(StringUtils.isNotBlank(keyword)){
@@ -218,7 +218,7 @@ public class ProductServiceImpl implements IProductService {
         }
         List<Product> productList = productMapper.selectByNameAndCategoryIds(StringUtils.isBlank(keyword)?null:keyword,categoryIdList.size()==0?null:categoryIdList);
 
-        List<ProductListVo> productListVoList = Lists.newArrayList();
+        List<ProductListVo> productListVoList = new ArrayList<>();
         for(Product product : productList){
             ProductListVo productListVo = assembleProductListVo(product);
             productListVoList.add(productListVo);
