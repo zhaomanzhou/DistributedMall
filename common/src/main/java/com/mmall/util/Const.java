@@ -18,7 +18,7 @@ public class Const {
         //        Set<String> PRICE_ASC_DESC = Sets.newHashSet("price_desc","price_asc");
         Set<String> PRICE_ASC_DESC = new HashSet<String>() {{
             add("price_desc");
-            add("price_asc");
+                add("price_asc");
         }};
 
     }

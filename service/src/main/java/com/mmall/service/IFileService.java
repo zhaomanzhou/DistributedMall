@@ -6,5 +6,5 @@ package com.mmall.service;
 
 public interface IFileService {
 
-//    String upload(MultipartFile file, String path);
+
 }

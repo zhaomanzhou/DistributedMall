@@ -37,60 +37,8 @@ public class ProductServiceImpl implements IProductService {
     @Autowired
     private ICategoryService iCategoryService;
 
-    public ServerResponse saveOrUpdateProduct(Product product){
-        if(product != null)
-        {
-            if(StringUtils.isNotBlank(product.getSubImages())){
-                String[] subImageArray = product.getSubImages().split(",");
-                if(subImageArray.length > 0){
-                    product.setMainImage(subImageArray[0]);
-                }
-            }
-
-            if(product.getId() != null){
-                int rowCount = productMapper.updateByPrimaryKey(product);
-                if(rowCount > 0){
-                    return ServerResponse.createBySuccess("更新产品成功");
-                }
-                return ServerResponse.createBySuccess("更新产品失败");
-            }else{
-                int rowCount = productMapper.insert(product);
-                if(rowCount > 0){
-                    return ServerResponse.createBySuccess("新增产品成功");
-                }
-                return ServerResponse.createBySuccess("新增产品失败");
-            }
-        }
-        return ServerResponse.createByErrorMessage("新增或更新产品参数不正确");
-    }
 
 
-    public ServerResponse<String> setSaleStatus(Integer productId,Integer status){
-        if(productId == null || status == null){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),ResponseCode.ILLEGAL_ARGUMENT.getDesc());
-        }
-        Product product = new Product();
-        product.setId(productId);
-        product.setStatus(status);
-        int rowCount = productMapper.updateByPrimaryKeySelective(product);
-        if(rowCount > 0){
-            return ServerResponse.createBySuccess("修改产品销售状态成功");
-        }
-        return ServerResponse.createByErrorMessage("修改产品销售状态失败");
-    }
-
-
-    public ServerResponse<ProductDetailVo> manageProductDetail(Integer productId){
-        if(productId == null){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),ResponseCode.ILLEGAL_ARGUMENT.getDesc());
-        }
-        Product product = productMapper.selectByPrimaryKey(productId);
-        if(product == null){
-            return ServerResponse.createByErrorMessage("产品已下架或者删除");
-        }
-        ProductDetailVo productDetailVo = assembleProductDetailVo(product);
-        return ServerResponse.createBySuccess(productDetailVo);
-    }
 
     private ProductDetailVo assembleProductDetailVo(Product product){
         ProductDetailVo productDetailVo = new ProductDetailVo();
@@ -121,22 +69,7 @@ public class ProductServiceImpl implements IProductService {
 
 
 
-    public ServerResponse<PageInfo> getProductList(int pageNum, int pageSize){
-        //startPage--start
-        //填充自己的sql查询逻辑
-        //pageHelper-收尾
-        PageHelper.startPage(pageNum,pageSize);
-        List<Product> productList = productMapper.selectList();
 
-        List<ProductListVo> productListVoList = new ArrayList<>();
-        for(Product productItem : productList){
-            ProductListVo productListVo = assembleProductListVo(productItem);
-            productListVoList.add(productListVo);
-        }
-        PageInfo pageResult = new PageInfo(productList);
-        pageResult.setList(productListVoList);
-        return ServerResponse.createBySuccess(pageResult);
-    }
 
     private ProductListVo assembleProductListVo(Product product){
         ProductListVo productListVo = new ProductListVo();
@@ -152,22 +85,6 @@ public class ProductServiceImpl implements IProductService {
     }
 
 
-
-    public ServerResponse<PageInfo> searchProduct(String productName,Integer productId,int pageNum,int pageSize){
-        PageHelper.startPage(pageNum,pageSize);
-        if(StringUtils.isNotBlank(productName)){
-            productName = new StringBuilder().append("%").append(productName).append("%").toString();
-        }
-        List<Product> productList = productMapper.selectByNameAndProductId(productName,productId);
-        List<ProductListVo> productListVoList = new ArrayList<>();
-        for(Product productItem : productList){
-            ProductListVo productListVo = assembleProductListVo(productItem);
-            productListVoList.add(productListVo);
-        }
-        PageInfo pageResult = new PageInfo(productList);
-        pageResult.setList(productListVoList);
-        return ServerResponse.createBySuccess(pageResult);
-    }
 
 
     public ServerResponse<ProductDetailVo> getProductDetail(Integer productId){
@@ -187,9 +104,9 @@ public class ProductServiceImpl implements IProductService {
 
 
     public ServerResponse<PageInfo> getProductByKeywordCategory(String keyword,Integer categoryId,int pageNum,int pageSize,String orderBy){
-        if(StringUtils.isBlank(keyword) && categoryId == null){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),ResponseCode.ILLEGAL_ARGUMENT.getDesc());
-        }
+      //  if(StringUtils.isBlank(keyword) && categoryId == null){
+       //     return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+      //  }
         List<Integer> categoryIdList = new ArrayList<Integer>();
 
         if(categoryId != null){

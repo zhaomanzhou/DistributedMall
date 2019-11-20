@@ -12,7 +12,6 @@ import springfox.documentation.service.Parameter;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +42,7 @@ public class Swagger2 {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("Spring Boot中使用Swagger2构建RESTful")
+                .title("校园微超市前后端交互api")
                 .version("1.0")
                 .build();
     }
