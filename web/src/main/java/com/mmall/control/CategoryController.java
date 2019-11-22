@@ -18,10 +18,7 @@ public class CategoryController {
 
     @Autowired
     private ICategoryService iCategoryService;
-
     //根据父分类获取分类
-
-
     @ApiOperation(value = "获取分类" )
     @ApiImplicitParam(name = "categoryId", value = "分类id默认为0",  dataType = "int")
     @RequestMapping("get_category.do")
