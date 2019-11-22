@@ -17,4 +17,8 @@ public interface OrderitemMapper {
     int updateByPrimaryKeySelective(Orderitem record);
 
     int updateByPrimaryKey(Orderitem record);
+
+
 }
+
+    
