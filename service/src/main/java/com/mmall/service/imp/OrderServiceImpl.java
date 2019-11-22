@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
  * Created by weiqiang
  */
 
-@Service
+@Service("iOrderService")
 public class OrderServiceImpl implements IOrderService {
 
 

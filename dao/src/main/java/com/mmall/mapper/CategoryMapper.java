@@ -1,10 +1,10 @@
 package com.mmall.mapper;
 
-import com.mmall.bean.Category;
-
+import com.mmall.bean.po.Category;
 import java.util.List;
 
 public interface CategoryMapper {
+
     int deleteByPrimaryKey(Integer id);
 
     int insert(Category record);
@@ -16,8 +16,6 @@ public interface CategoryMapper {
     int updateByPrimaryKeySelective(Category record);
 
     int updateByPrimaryKey(Category record);
-
-    List<Category> selectAll();
 
     List<Category> selectCategoryChildrenByParentId(Integer parentId);
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE generatorConfiguration
         PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
-        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+        "http://mybatis.org/dtd/mybatis-generator-config_1_ 0.dtd">
 
 <generatorConfiguration>
 
@@ -11,7 +11,7 @@
             <property name="suppressAllComments" value="true"/>
         </commentGenerator>
         <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
-                        connectionURL="jdbc:mysql://120.79.87.220:3306/mmall"
+                        connectionURL="jdbc:mysql://127.0.0.1:3306/mmall"
                         userId="root"
                         password="123">
         </jdbcConnection>
@@ -20,20 +20,20 @@
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
         <!--制定bean的位置-->
-        <javaModelGenerator targetPackage="com.mmall.bean.bean"
-                            targetProject="./dao/src/main/java">
+        <javaModelGenerator targetPackage="com.mmall.bean"
+                            targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
         <!--指定sql映射文件的位置-->
-        <sqlMapGenerator targetPackage="mybatis/com.mmall.mapper"
-                         targetProject="./dao/src/main/resources">
+        <sqlMapGenerator targetPackage="mybatis/mapper"
+                         targetProject="src/main/resources">
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
         <!--            制定dao接口生成的位置,mapper接口-->
         <javaClientGenerator type="XMLMAPPER"
-                             targetPackage="com.mmall.com.mmall.mapper.com.mmall.mapper"
-                             targetProject="./dao/src/main/java">
+                             targetPackage="com.mmall.mapper"
+                             targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
         <!--   制定每个表的生成策略 -->
@@ -44,31 +44,34 @@
                enableDeleteByExample="false"
                enableSelectByExample="false"
                selectByExampleQueryId="false"/>
-
-<!--        <table tableName="mmall_category" domainObjectName="Category"-->
-<!--               enableCountByExample="false"-->
-<!--               enableUpdateByExample="false"-->
-<!--               enableDeleteByExample="false"-->
-<!--               enableSelectByExample="false"-->
-<!--               selectByExampleQueryId="false"/>-->
-<!--        <table tableName="mmall_order" domainObjectName="Order"-->
-<!--               enableCountByExample="false"-->
-<!--               enableUpdateByExample="false"-->
-<!--               enableDeleteByExample="false"-->
-<!--               enableSelectByExample="false"-->
-<!--               selectByExampleQueryId="false"/>-->
-<!--        <table tableName="mmall_order_item" domainObjectName="Orderitem"-->
-<!--               enableCountByExample="false"-->
-<!--               enableUpdateByExample="false"-->
-<!--               enableDeleteByExample="false"-->
-<!--               enableSelectByExample="false"-->
-<!--               selectByExampleQueryId="false"/>-->
-<!--        <table tableName="mmall_pay_info" domainObjectName="Pay"-->
-<!--               enableCountByExample="false"-->
-<!--               enableUpdateByExample="false"-->
-<!--               enableDeleteByExample="false"-->
-<!--               enableSelectByExample="false"-->
-<!--               selectByExampleQueryId="false"/>-->
+        <table tableName="mmall_category" domainObjectName="Category"
+               enableCountByExample="false"
+               enableUpdateByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+        <table tableName="mmall_order" domainObjectName="Order"
+               enableCountByExample="false"
+               enableUpdateByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+        <table tableName="mmall_order_item" domainObjectName="OrderItem"
+               enableCountByExample="false"
+               enableUpdateByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+        <table tableName="mmall_pay_info" domainObjectName="PayInfo"
+               enableCountByExample="false"
+               enableUpdateByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
         <table tableName="mmall_product" domainObjectName="Product"
                enableCountByExample="false"
                enableUpdateByExample="false"
@@ -78,18 +81,21 @@
             <columnOverride column="sub_images" javaType="java.lang.String" jdbcType="VARCHAR" />
             <columnOverride column="detail" javaType="java.lang.String" jdbcType="VARCHAR" />
         </table>
+        <table tableName="mmall_Shipping" domainObjectName="Shipping"
+               enableCountByExample="false"
+               enableUpdateByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               selectByExampleQueryId="false">
 
-<!--        <table tableName="mmall_shipping" domainObjectName="Shipping"-->
-<!--               enableCountByExample="false"-->
-<!--               enableUpdateByExample="false"-->
-<!--               enableDeleteByExample="false"-->
-<!--               enableSelectByExample="false"-->
-<!--               selectByExampleQueryId="false"/>-->
-<!--        <table tableName="mmall_user" domainObjectName="User"-->
-<!--               enableCountByExample="false"-->
-<!--               enableUpdateByExample="false"-->
-<!--               enableDeleteByExample="false"-->
-<!--               enableSelectByExample="false"-->
-<!--               selectByExampleQueryId="false"/>-->
+        </table>
+        <table tableName="mmall_user" domainObjectName="User"
+               enableCountByExample="false"
+               enableUpdateByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               selectByExampleQueryId="false">
+
+        </table>
     </context>
 </generatorConfiguration>

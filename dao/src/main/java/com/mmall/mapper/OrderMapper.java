@@ -1,6 +1,8 @@
 package com.mmall.mapper;
 
-import com.mmall.bean.Order;
+import com.mmall.bean.po.Order;
+import org.apache.ibatis.annotations.Param;
+import java.util.List;
 
 public interface OrderMapper {
     int deleteByPrimaryKey(Integer id);
@@ -14,4 +16,24 @@ public interface OrderMapper {
     int updateByPrimaryKeySelective(Order record);
 
     int updateByPrimaryKey(Order record);
+
+
+
+    Order selectByUserIdAndOrderNo(@Param("userId")Integer userId, @Param("orderNo")Long orderNo);
+
+
+    Order selectByOrderNo(Long orderNo);
+
+
+
+    List<Order> selectByUserId(Integer userId);
+
+
+    List<Order> selectAllOrder();
+
+
+    //二期新增定时关单
+    List<Order> selectOrderStatusByCreateTime(@Param("status") Integer status,@Param("date") String date);
+
+    int closeOrderByOrderId(Integer id);
 }
