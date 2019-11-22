@@ -42,7 +42,7 @@ public class Swagger2 {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("校园微超市前后端交互api")
+                .title("校园微超市后台前后端交互api")
                 .version("1.0")
                 .build();
     }

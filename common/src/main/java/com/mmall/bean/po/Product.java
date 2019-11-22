@@ -35,4 +35,5 @@ public class Product {
     private Date createTime;
 
     private Date updateTime;
+
 }

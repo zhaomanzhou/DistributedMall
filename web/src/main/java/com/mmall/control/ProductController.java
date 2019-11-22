@@ -26,7 +26,7 @@ public class ProductController {
 
     @ApiOperation(value = "获取文章详细信息" )
     @ApiImplicitParam(name = "productId", value = "商品id", required = true, dataType = "int")
-    @GetMapping("detail.do")
+    @RequestMapping("detail.do")
     public ServerResponse<ProductDetailVo> detail(Integer productId){
         return iProductService.getProductDetail(productId);
     }
@@ -34,7 +34,7 @@ public class ProductController {
 
     @ApiOperation(value = "获取文章详细信息" )
     @ApiImplicitParam(name = "productId", value = "商品id", required = true,paramType = "path", dataType = "int")
-    @GetMapping( "/{productId}")
+    @RequestMapping( "/{productId}")
     public ServerResponse<ProductDetailVo> detailRESTful(@PathVariable Integer productId){
         return iProductService.getProductDetail(productId);
     }
