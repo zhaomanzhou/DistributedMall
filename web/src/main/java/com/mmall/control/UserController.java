@@ -41,6 +41,7 @@ public class UserController {
             @ApiImplicitParam(name = "username", value = "用户名", required = true,dataType = "String"),
             @ApiImplicitParam(name = "password", value = "密码",required = true,dataType = "String"),
     })
+
     @RequestMapping(value = "login.do", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<User> login(String username, String password) {

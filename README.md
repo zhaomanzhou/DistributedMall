@@ -20,3 +20,13 @@ Project for course software engineering
 path in your computer
 6. The most and last step, fill the Command line with `mybatis-generator:generate`
 then click apply. 
+
+## 模块
+- 用户模块
+- 商品模块
+- 购物车模块
+- 订单配送模块
+
+
+##  更改
+- 删除找回密码问题和答案

@@ -1,3 +1,5 @@
+package dao;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,12 +13,4 @@ import javax.sql.DataSource;
 public class TestDataSource
 {
 
-    @Autowired
-    private DataSource dataSource;
-
-    @Test
-    public void testDataSource()
-    {
-        System.out.println(dataSource);
-    }
 }

@@ -1,4 +1,4 @@
-package com.mmall;
+package com.mmall.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +21,8 @@ import java.util.List;
 
 @Configuration
 @EnableSwagger2
-public class Swagger2 {
+public class Swagger2Configuration
+{
 
     @Bean
     public Docket createRestApi() {
@@ -34,7 +35,7 @@ public class Swagger2 {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.mmall.control.portal"))
+                .apis(RequestHandlerSelectors.basePackage("com.mmall.control"))
                 .paths(PathSelectors.any())
                 .build()
                 .globalOperationParameters(pars)  ;
