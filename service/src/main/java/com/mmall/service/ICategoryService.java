@@ -12,5 +12,14 @@ import java.util.List;
 public interface ICategoryService {
 
     ServerResponse<List<Category>> getChildrenParallelCategory(Integer categoryId);
+
     ServerResponse<List<Integer>> selectCategoryAndChildrenById(Integer categoryId);
+
+    ServerResponse<List<Integer>> deleteCategory(Integer categoryId);
+
+    ServerResponse<List<Integer>> updateCategory(Category category);
+
+
+
+
 }

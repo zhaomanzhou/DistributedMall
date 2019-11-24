@@ -1,10 +1,6 @@
 package com.mmall.service.imp;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import com.mmall.bean.po.Shipping;
 import com.mmall.bean.po.User;
-import com.mmall.mapper.ShippingMapper;
 import com.mmall.mapper.UserMapper;
 import com.mmall.service.IUserService;
 import com.mmall.util.*;
@@ -14,9 +10,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 /**

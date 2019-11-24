@@ -76,12 +76,8 @@
       <if test="status != null" >
         status,
       </if>
-      <if test="createTime != null" >
         create_time,
-      </if>
-      <if test="updateTime != null" >
         update_time,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -114,12 +110,8 @@
       <if test="status != null" >
         #{status,jdbcType=INTEGER},
       </if>
-      <if test="createTime != null" >
         now(),
-      </if>
-      <if test="updateTime != null" >
         now(),
-      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.mmall.bean.po.Product" >
@@ -152,12 +144,7 @@
       <if test="status != null" >
         status = #{status,jdbcType=INTEGER},
       </if>
-      <if test="createTime != null" >
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null" >
         update_time = now(),
-      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>

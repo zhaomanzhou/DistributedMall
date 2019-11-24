@@ -7,7 +7,9 @@ import com.mmall.util.ServerResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -19,15 +21,12 @@ import java.util.Set;
 
 @Service("iCategoryService")
 @Slf4j
+@Transactional(rollbackFor = RuntimeException.class)
 public class CategoryServiceImpl implements ICategoryService {
-
 
 
     @Autowired
     private CategoryMapper categoryMapper;
-
-
-
 
 
     @Override
@@ -57,16 +56,36 @@ public class CategoryServiceImpl implements ICategoryService {
         }
         return ServerResponse.createBySuccess(categoryIdList);
     }
+
+    @Override
+    public ServerResponse<List<Integer>> deleteCategory(Integer categoryId) {
+        Set<Category> categorySet = new HashSet<>();
+        findChildCategory(categorySet, categoryId);
+        for (Category category : categorySet) {
+            if (categoryMapper.deleteByPrimaryKey(category.getId()) <= 0)
+                return ServerResponse.createByErrorMessage("删除分类失败");
+        }
+        return ServerResponse.createBySuccessMessage("删除分类成功");
+    }
+
+    @Override
+    public ServerResponse<List<Integer>> updateCategory(Category category) {
+        int ok = categoryMapper.updateByPrimaryKeySelective(category);
+        if (ok > 0)
+            return ServerResponse.createBySuccessMessage("更新分类成功");
+        return ServerResponse.createByErrorMessage("跟新分类失败");
+    }
+
     //递归算法,算出子节点
-    private void findChildCategory(Set<Category> categorySet , Integer categoryId){
+    private void findChildCategory(Set<Category> categorySet, Integer categoryId) {
         Category category = categoryMapper.selectByPrimaryKey(categoryId);
-        if(category != null){
+        if (category != null) {
             categorySet.add(category);
         }
         //查找子节点,递归算法一定要有一个退出的条件
         List<Category> categoryList = categoryMapper.selectCategoryChildrenByParentId(categoryId);
-        for(Category categoryItem : categoryList){
-            findChildCategory(categorySet,categoryItem.getId());
+        for (Category categoryItem : categoryList) {
+            findChildCategory(categorySet, categoryItem.getId());
         }
     }
 
