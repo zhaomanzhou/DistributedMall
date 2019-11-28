@@ -1,56 +1,82 @@
 version: "3"
 
 services:
-  voting-app:
-    build: ./voting-app/.
+
+  tomcat1:
+    build: ../../web/.
     volumes:
-     - ./voting-app:/app
-    ports:
-      - "5000:80"
+     - mmall-app:/app
     links:
       - redis
+      - mysql
     networks:
-      - front-tier
       - back-tier
+    environment:
+      TOMCAT_SERVER_ID: tomcat_server_001
+      spring.profiles.active: docker
 
-  result-app:
-    build: ./result-app/.
+  tomcat2:
+    build: ../../web/.
     volumes:
-      - ./result-app:/app
-    ports:
-      - "5001:80"
+      - mmall-app:/app
     links:
-      - db
-    networks:
-      - front-tier
-      - back-tier
-
-  worker:
-    build: ./worker
-    links:
-      - db
       - redis
+      - mysql
     networks:
       - back-tier
+    environment:
+      TOMCAT_SERVER_ID: tomcat_server_002
+      spring.profiles.active: docker
+
+  tomcat3:
+    build: ../../web/.
+    volumes:
+      - mmall-app:/app
+    links:
+      - redis
+      - mysql
+    networks:
+      - back-tier
+    environment:
+      TOMCAT_SERVER_ID: tomcat_server_003
+      spring.profiles.active: docker
+
+  mysql:
+    image: mysql:5.7
+    networks:
+      - back-tier
+    volumes:
+      - db-data:/var/lib/mysql
+      - ./mmall.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      # 設置數據庫密碼
+      MYSQL_ROOT_PASSWORD: 123456
+
 
   redis:
     image: redis
     ports: ["6379"]
     networks:
       - back-tier
-
-  db:
-    image: postgres:9.4
-    volumes:
-      - "db-data:/var/lib/postgresql/data"
+  nginx:
+    build: ../nginx/.
+    ports:
+      - "8088:80"
+    links:
+      - tomcat1:tomcat1
+      - tomcat2:tomcat2
+      - tomcat3:tomcat03
     networks:
       - back-tier
+    depends_on:
+      - tomcat1
+      - tomcat2
+      - tomcat3
 
 volumes:
   db-data:
-
+  mmall-app:
 networks:
-  front-tier:
   back-tier:
 
 

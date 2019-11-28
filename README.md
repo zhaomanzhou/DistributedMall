@@ -21,6 +21,21 @@ path in your computer
 6. The most and last step, fill the Command line with `mybatis-generator:generate`
 then click apply. 
 
+
+## For docker-compose
+
+to start it, just run the following command in the floder where the docker-compose file located
+which is Docker/deploy  
+`docker-compose up`  
+if you want run it background, run it with parameter `-d`
+if you want Build images before starting containers.
+run it with parameter `--build`
+
+to stop the container
+run the following command
+`docker-compose down` 
+
+
 ## 模块
 - 用户模块
 - 商品模块

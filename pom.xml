@@ -13,8 +13,8 @@
         <module>common</module>
         <module>dao</module>
         <module>service</module>
-        <module>web_BackStage</module>
         <module>web</module>
+        <module>web_backstage</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
