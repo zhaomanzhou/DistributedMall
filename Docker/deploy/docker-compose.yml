@@ -52,16 +52,15 @@ services:
       # 設置數據庫密碼
       MYSQL_ROOT_PASSWORD: 123456
 
-
   redis:
     image: redis
-    ports: ["6379"]
+    ports: ["6379:6379"]
     networks:
       - back-tier
   nginx:
     build: ../nginx/.
     ports:
-      - "8088:80"
+      - "8080:80"
     links:
       - tomcat1:tomcat1
       - tomcat2:tomcat2

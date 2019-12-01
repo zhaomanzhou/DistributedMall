@@ -19,10 +19,9 @@ public class CategoryController {
     @Autowired
     private ICategoryService iCategoryService;
     //根据父分类获取分类
-    @ApiOperation(value = "获取分类" )
-    @ApiImplicitParam(name = "categoryId", value = "分类id默认为0",  dataType = "int")
-    @RequestMapping("get_category.do")
-    @ResponseBody
+    @ApiOperation(value = "获取所有分类类目" )
+    @ApiImplicitParam(name = "categoryId", value = "分类id默认为0",  dataType = "int", required = false)
+    @RequestMapping("categories")
     public ServerResponse getChildrenParallelCategory(@RequestParam(value = "categoryId" ,defaultValue = "0") Integer categoryId){
         return iCategoryService.getChildrenParallelCategory(categoryId);
     }

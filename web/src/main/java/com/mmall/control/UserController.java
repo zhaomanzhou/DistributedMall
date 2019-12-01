@@ -45,7 +45,7 @@ public class UserController {
             @ApiImplicitParam(name = "password", value = "密码",required = true,dataType = "String"),
     })
 
-    @RequestMapping(value = "login.do", method = RequestMethod.POST)
+    @RequestMapping(value = "login", method = RequestMethod.POST)
     public ServerResponse<User> login(String username, String password) {
         return iUserService.login(username, password);
     }
@@ -53,11 +53,17 @@ public class UserController {
 
 
 
-//    @RequestMapping(value = "register.do",method = RequestMethod.POST)
-//    @ResponseBody
-//    public ServerResponse<String> register(User user){
-//        return iUserService.register(user);
-//    }
+    @RequestMapping(value = "register",method = RequestMethod.POST)
+    @ApiOperation("注册")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "username", value = "用户名", required = true,dataType = "String"),
+            @ApiImplicitParam(name = "password", value = "密码",required = true,dataType = "String"),
+            @ApiImplicitParam(name = "email", value = "邮箱", required = false),
+            @ApiImplicitParam(name = "phone", value = "电话", required = false)
+    })
+    public ServerResponse<String> register(User user){
+        return iUserService.register(user);
+    }
 //
 //
 //    @RequestMapping(value = "check_valid.do",method = RequestMethod.POST)
@@ -67,15 +73,23 @@ public class UserController {
 //    }
 //
 //
-//    @RequestMapping(value = "get_user_info.do",method = RequestMethod.POST)
-//    @ResponseBody
-//    public ServerResponse<User> getUserInfo(HttpSession session){
-//        User user = (User) session.getAttribute(Const.CURRENT_USER);
-//        if(user != null){
-//            return ServerResponse.createBySuccess(user);
-//        }
-//        return ServerResponse.createByErrorMessage("用户未登录,无法获取当前用户的信息");
-//    }
+
+    @ApiOperation("获取当前用户信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "token信息", required = true,dataType = "String"),
+    })
+    @RequestMapping(value = "get_user_info",method = RequestMethod.POST)
+    public ServerResponse<User> getUserInfo(String token){
+
+        User user = iUserService.getUser(token);
+        if(user == null)
+        {
+            return ServerResponse.createByErrorMessage("token不合法");
+        }else
+        {
+            return ServerResponse.createBySuccess(user);
+        }
+    }
 //
 //
 //    @RequestMapping(value = "forget_get_question.do",method = RequestMethod.POST)

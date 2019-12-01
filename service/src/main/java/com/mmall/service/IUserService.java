@@ -11,5 +11,8 @@ import com.mmall.util.ServerResponse;
 public interface IUserService {
 
     ServerResponse<User> login(String username, String password);
+    ServerResponse<String> register(User user);
+    User getUser(String token);
+    ServerResponse<User> getInformation(Integer userId);
 
 }

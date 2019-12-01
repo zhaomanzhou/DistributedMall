@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import static com.mmall.util.ServerResponse.createBySuccess;
+
 /**
  * Created by weiqiang
  */
@@ -52,10 +54,11 @@ public  class UserServiceImpl implements IUserService {
         map.put("mes", "登陆成功");
         map.put("Token", token);
         redis.opsForValue().set(token, json, 30, TimeUnit.MINUTES);
-        return ServerResponse.createBySuccess(map);
+        return createBySuccess(map);
     }
 
 
+    @Override
     public ServerResponse<String> register(User user){
         ServerResponse validResponse = this.checkValid(user.getUsername(), Const.USERNAME);
         if(!validResponse.isSuccess()){
@@ -73,6 +76,20 @@ public  class UserServiceImpl implements IUserService {
             return ServerResponse.createByErrorMessage("注册失败");
         }
         return ServerResponse.createBySuccessMessage("注册成功");
+    }
+
+
+
+    @Override
+    public User getUser(String token)
+    {
+        String s = redis.opsForValue().get(token);
+        if(s == null)
+        {
+            return null;
+        }
+        User user = JsonUtil.string2Obj(s, User.class);
+        return user;
     }
 
     public ServerResponse<String> checkValid(String str,String type){
@@ -105,7 +122,7 @@ public  class UserServiceImpl implements IUserService {
         }
         String question = userMapper.selectQuestionByUsername(username);
         if(StringUtils.isNotBlank(question)){
-            return ServerResponse.createBySuccess(question);
+            return createBySuccess(question);
         }
         return ServerResponse.createByErrorMessage("找回密码的问题是空的");
     }
@@ -143,7 +160,7 @@ public  class UserServiceImpl implements IUserService {
 
         int updateCount = userMapper.updateByPrimaryKeySelective(updateUser);
         if(updateCount > 0){
-            return ServerResponse.createBySuccess("更新个人信息成功",updateUser);
+            return createBySuccess("更新个人信息成功",updateUser);
         }
         return ServerResponse.createByErrorMessage("更新个人信息失败");
     }
@@ -157,7 +174,7 @@ public  class UserServiceImpl implements IUserService {
         }
         user.setPassword(StringUtils.EMPTY);
         user.setAnswer(StringUtils.EMPTY);
-        return ServerResponse.createBySuccess(user);
+        return createBySuccess(user);
 
     }
 
@@ -173,7 +190,7 @@ public  class UserServiceImpl implements IUserService {
      */
     public ServerResponse checkAdminRole(User user){
         if(user != null && user.getRole().intValue() == Const.Role.ROLE_ADMIN){
-            return ServerResponse.createBySuccess();
+            return createBySuccess();
         }
         return ServerResponse.createByError();
     }
