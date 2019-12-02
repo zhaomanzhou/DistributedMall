@@ -7,6 +7,7 @@ import com.mmall.service.IUserService;
 import com.mmall.util.Const;
 import com.mmall.util.ResponseCode;
 import com.mmall.util.ServerResponse;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -22,7 +23,7 @@ import javax.servlet.http.HttpSession;
  * Created by geely
  */
 
-@ApiOperation("购物车相关API")
+@Api(tags = "购物车相关的api", description = "/cart")
 @RestController
 @RequestMapping("/cart/")
 public class CartController {

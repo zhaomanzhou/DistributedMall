@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.mmall.bean.vo.ProductDetailVo;
 import com.mmall.service.IProductService;
 import com.mmall.util.ServerResponse;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/product/")
+@Api(tags = "商品相关的api", description = "/product")
 public class ProductController {
 
     @Autowired

@@ -2,6 +2,7 @@ package com.mmall.control;
 
 import com.mmall.service.ICategoryService;
 import com.mmall.util.ServerResponse;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @RestController
 @RequestMapping("/category/")
+@Api(tags = "商品类目相关api", description = "/category")
 public class CategoryController {
 
     @Autowired
