@@ -4,3 +4,7 @@ spring:
     password:
   datasource:
     password:
+
+
+server:
+  port: 8888
