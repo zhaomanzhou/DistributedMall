@@ -26,7 +26,7 @@ public class ProductController {
 
     @ApiOperation(value = "获取商品详细信息" )
     @ApiImplicitParam(name = "productId", value = "商品id", required = true, dataType = "int")
-    @RequestMapping("detail.do")
+    @RequestMapping("detail")
     public ServerResponse<ProductDetailVo> detail(Integer productId){
         return iProductService.getProductDetail(productId);
     }
@@ -47,7 +47,7 @@ public class ProductController {
             @ApiImplicitParam(name = "pageSize", value = "每页数据的数量", dataType = "int"),
             @ApiImplicitParam(name = "orderBy", value = "排序,price_desc或者price_asc", dataType = "String")
     })
-    @PostMapping("list.do")
+    @PostMapping("list")
     public ServerResponse<PageInfo> list(@RequestParam(value = "keyword",required = false)String keyword,
                                          @RequestParam(value = "categoryId",required = false)Integer categoryId,
                                          @RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
