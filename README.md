@@ -36,15 +36,12 @@ run the following command
 `docker-compose down` 
 
 
-## 模块
-- 用户模块
-- 商品模块
-- 购物车模块
-- 订单配送模块
+## modules of service
+- user module
+- product module
+- shopping cart module
+- order module
 
-
-##  更改
-- 删除找回密码问题和答案
 
 ## install and run it
 Environment requirement
