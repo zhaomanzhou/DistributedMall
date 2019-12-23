@@ -45,3 +45,19 @@ run the following command
 
 ##  更改
 - 删除找回密码问题和答案
+
+## install and run it
+Environment requirement
+- jdk8+
+- maven3.6+
+- mysql5.7+
+- docker
+- kubernetes
+- redis  
+#### To run it
+1. modify the configuration in application.yaml to your
+environment, 
+2. init the databases with the sql file in Docker/deploy-server/mmall.sql
+3. start mysql server, redis server
+4. run `mvn install` in the root directory
+5. run `mvn spring-boot:run` to execute the program
