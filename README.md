@@ -58,3 +58,6 @@ environment,
 3. start mysql server, redis server
 4. run `mvn install` in the root directory
 5. run `mvn spring-boot:run` to execute the program
+
+
+Test
