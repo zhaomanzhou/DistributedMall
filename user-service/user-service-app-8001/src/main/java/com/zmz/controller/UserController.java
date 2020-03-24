@@ -3,12 +3,12 @@ package com.zmz.controller;
 
 
 import com.zmz.common.RequestContext;
-import com.zmz.entity.po.User;
 import com.zmz.exception.BusinessErrorEnum;
 import com.zmz.response.ServerResponse;
 import com.zmz.response.error.BusinessException;
-import com.zmz.service.IUserService;
 
+import com.zmz.user.entity.po.User;
+import com.zmz.user.service.IUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;

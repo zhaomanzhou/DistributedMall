@@ -2,7 +2,7 @@ package com.zmz.config.interceptor;
 
 import com.zmz.common.RedisPrefixConst;
 import com.zmz.constant.TokenHashConst;
-import com.zmz.entity.po.User;
+import com.zmz.user.entity.po.User;
 import com.zmz.util.Jwtutil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

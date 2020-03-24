@@ -1,25 +1,38 @@
 package com.zmz.controller;
 
-import com.github.pagehelper.PageInfo;
 import com.zmz.service.IShippingService;
+import com.zmz.user.entity.po.User;
+import com.zmz.user.service.IUserService;
 import org.apache.commons.lang.StringUtils;
+import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
 
 
-@Controller
+@RestController
 @RequestMapping("/shipping/")
 public class ShippingController {
 
 
     @Autowired
     private IShippingService iShippingService;
+
+    @Reference
+    private IUserService userService;
+
+    @RequestMapping("/test")
+    public void test(String token)
+    {
+        User uuu = userService.getUserByToken(token);
+        System.out.println(uuu);
+    }
 
 /*
     @RequestMapping("add.do")

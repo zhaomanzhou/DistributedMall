@@ -21,11 +21,17 @@ spring:
         max-idle: 10
         max-wait: 3
     password: cloudalibaba
-  cloud:
-    nacos:
-      discovery:
-        server-addr: zmz121.cn:8848
-        namespace: f678b632-7899-4a2d-acd7-8c7c3394b573
+  main:
+    # 解决Bean重复定义问题
+    allow-bean-definition-overriding: true
+dubbo:
+  # 配置注册中心
+  registry:
+    address: nacos://zmz121.cn:8848?namespace=f678b632-7899-4a2d-acd7-8c7c3394b573
+  # 设置超时时间
+  consumer:
+    timeout: 4000
+
 
 
 

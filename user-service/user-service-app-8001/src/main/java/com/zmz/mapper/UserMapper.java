@@ -1,6 +1,6 @@
 package com.zmz.mapper;
 
-import com.zmz.entity.po.User;
+import com.zmz.user.entity.po.User;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

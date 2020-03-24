@@ -16,7 +16,9 @@ public enum BusinessErrorEnum implements CommonError
 
     INVALID_PASSWORD(1003, "　密码不存在"),
 
-    REGISTER_FAILED(1004, "注册失败")
+    REGISTER_FAILED(1004, "注册失败"),
+
+    USER_NOT_LOGIN(1005, "用户未登陆")
     ;
 
     BusinessErrorEnum(int errorCode, String errorMessage)

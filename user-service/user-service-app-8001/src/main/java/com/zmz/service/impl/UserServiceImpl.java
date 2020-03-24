@@ -5,12 +5,12 @@ import com.zmz.common.JwtToken;
 import com.zmz.common.RedisPrefixConst;
 import com.zmz.common.ResponseCode;
 import com.zmz.constant.TokenHashConst;
-import com.zmz.entity.po.User;
 import com.zmz.exception.BusinessErrorEnum;
 import com.zmz.mapper.UserMapper;
 import com.zmz.response.error.BusinessException;
 import com.zmz.response.error.CommonErrorAdapter;
-import com.zmz.service.IUserService;
+import com.zmz.user.entity.po.User;
+import com.zmz.user.service.IUserService;
 import com.zmz.util.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -107,11 +107,13 @@ public class UserServiceImpl implements IUserService {
     @Override
     public User getUserByToken(String token)
     {
+        log.info("getUserByToken被调用");
         User user = (User)redisTemplate.opsForHash().get(RedisPrefixConst.TOKEN_PREFIX + token, TokenHashConst.USER);
         if(user == null)
         {
             return null;
         }
+        redisTemplate.expire(RedisPrefixConst.TOKEN_PREFIX+token, expiration, TimeUnit.MINUTES);
         return user;
     }
 
