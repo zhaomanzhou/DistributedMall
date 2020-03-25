@@ -49,7 +49,6 @@ Environment requirement
 - maven3.6+
 - mysql5.7+
 - docker
-- kubernetes
 - redis  
 #### To run it
 1. modify the configuration in application.yaml to your
