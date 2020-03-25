@@ -17,6 +17,8 @@
         <module>shipping-service</module>
         <module>cart-service</module>
         <module>order-service</module>
+        <module>order-service/order-service-api</module>
+        <module>order-service/order-service-app-8006</module>
 
 
     </modules>

@@ -1,5 +1,13 @@
 package com.zmz.controller;
 
+import com.github.pagehelper.PageInfo;
+import com.zmz.common.ContextConstant;
+import com.zmz.common.RequestContext;
+import com.zmz.common.ResponseCode;
+import com.zmz.common.ThreadLoalCache;
+import com.zmz.entity.po.Shipping;
+import com.zmz.response.ServerResponse;
+import com.zmz.response.error.BizException;
 import com.zmz.service.IShippingService;
 import com.zmz.user.entity.po.User;
 import com.zmz.user.service.IUserService;
@@ -34,90 +42,68 @@ public class ShippingController {
         System.out.println(uuu);
     }
 
-/*
-    @RequestMapping("add.do")
+    @RequestMapping("/add")
     @ResponseBody
-    public ServerResponse add(HttpServletRequest httpServletRequest, Shipping shipping){
-        String loginToken = CookieUtil.readLoginToken(httpServletRequest);
-        if(StringUtils.isEmpty(loginToken)){
-            return ServerResponse.createByErrorMessage("用户未登录,无法获取当前用户的信息");
-        }
-        String userJsonStr = RedisShardedPoolUtil.get(loginToken);
-        User user = JsonUtil.string2Obj(userJsonStr,User.class);
+    public ServerResponse add(Shipping shipping) throws BizException {
+        User user = (User) ThreadLoalCache.get(ContextConstant.USER);
         if(user ==null){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
+            return ServerResponse.error(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }
-        return iShippingService.add(user.getId(),shipping);
+        iShippingService.add(user.getId(),shipping);
+        return ServerResponse.success();
     }
 
 
-    @RequestMapping("del.do")
+    @RequestMapping("/del")
     @ResponseBody
-    public ServerResponse del(HttpServletRequest httpServletRequest,Integer shippingId){
-        String loginToken = CookieUtil.readLoginToken(httpServletRequest);
-        if(StringUtils.isEmpty(loginToken)){
-            return ServerResponse.createByErrorMessage("用户未登录,无法获取当前用户的信息");
-        }
-        String userJsonStr = RedisShardedPoolUtil.get(loginToken);
-        User user = JsonUtil.string2Obj(userJsonStr,User.class);
-
+    public ServerResponse del(Integer shippingId) throws BizException {
+        User user = (User) ThreadLoalCache.get(ContextConstant.USER);
         if(user ==null){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
+            return ServerResponse.error(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }
-        return iShippingService.del(user.getId(),shippingId);
+        iShippingService.del(user.getId(),shippingId);
+        return ServerResponse.success();
     }
 
-    @RequestMapping("update.do")
+    @RequestMapping("/update")
     @ResponseBody
-    public ServerResponse update(HttpServletRequest httpServletRequest,Shipping shipping){
-        String loginToken = CookieUtil.readLoginToken(httpServletRequest);
-        if(StringUtils.isEmpty(loginToken)){
-            return ServerResponse.createByErrorMessage("用户未登录,无法获取当前用户的信息");
-        }
-        String userJsonStr = RedisShardedPoolUtil.get(loginToken);
-        User user = JsonUtil.string2Obj(userJsonStr,User.class);
+    public ServerResponse update(Shipping shipping) throws BizException {
+        User user = (User) ThreadLoalCache.get(ContextConstant.USER);
         if(user ==null){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
+            return ServerResponse.error(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }
-        return iShippingService.update(user.getId(),shipping);
+        iShippingService.update(user.getId(),shipping);
+        return ServerResponse.success();
     }
 
 
-    @RequestMapping("select.do")
+    @RequestMapping("/select")
     @ResponseBody
-    public ServerResponse<Shipping> select(HttpServletRequest httpServletRequest,Integer shippingId){
-        String loginToken = CookieUtil.readLoginToken(httpServletRequest);
-        if(StringUtils.isEmpty(loginToken)){
-            return ServerResponse.createByErrorMessage("用户未登录,无法获取当前用户的信息");
-        }
-        String userJsonStr = RedisShardedPoolUtil.get(loginToken);
-        User user = JsonUtil.string2Obj(userJsonStr,User.class);
+    public ServerResponse<Shipping> select(Integer shippingId) throws BizException {
+        User user = (User) ThreadLoalCache.get(ContextConstant.USER);
 
         if(user ==null){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
+            return ServerResponse.error(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }
-        return iShippingService.select(user.getId(),shippingId);
+        Shipping select = iShippingService.select(user.getId(), shippingId);
+        return ServerResponse.success(select);
+
     }
 
 
-    @RequestMapping("list.do")
+    @RequestMapping("/list")
     @ResponseBody
     public ServerResponse<PageInfo> list(@RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
-                                         @RequestParam(value = "pageSize",defaultValue = "10")int pageSize,
-                                         HttpServletRequest httpServletRequest){
+                                         @RequestParam(value = "pageSize",defaultValue = "10")int pageSize){
 
-        String loginToken = CookieUtil.readLoginToken(httpServletRequest);
-        if(StringUtils.isEmpty(loginToken)){
-            return ServerResponse.createByErrorMessage("用户未登录,无法获取当前用户的信息");
-        }
-        String userJsonStr = RedisShardedPoolUtil.get(loginToken);
-        User user = JsonUtil.string2Obj(userJsonStr,User.class);
+        User user = (User) ThreadLoalCache.get(ContextConstant.USER);
 
         if(user ==null){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
+            return ServerResponse.error(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }
-        return iShippingService.list(user.getId(),pageNum,pageSize);
-    }*/
+        PageInfo list = iShippingService.list(user.getId(), pageNum, pageSize);
+        return ServerResponse.success(list);
+    }
 
 
 

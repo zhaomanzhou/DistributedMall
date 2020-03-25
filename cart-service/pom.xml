@@ -7,9 +7,14 @@
         <groupId>zmz</groupId>
         <version>2.0</version>
     </parent>
+
+    <packaging>pom</packaging>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>cart-service</artifactId>
-
+    <modules>
+        <module>cart-service-api</module>
+        <module>cart-service-app-8003</module>
+    </modules>
 
 </project>
