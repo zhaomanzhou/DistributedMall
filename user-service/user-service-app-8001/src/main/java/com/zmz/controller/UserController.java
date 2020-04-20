@@ -129,7 +129,6 @@ public class UserController {
     @ResponseBody
     public ServerResponse<User> update_information(User user) throws BusinessException {
         userService.updateInformation(user);
-
         return ServerResponse.success();
     }
 

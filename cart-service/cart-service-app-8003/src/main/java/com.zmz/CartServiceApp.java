@@ -13,8 +13,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 @EnableDubbo
 @MapperScan("com.zmz.mapper")
-public class ShippingServiceApp {
+public class CartServiceApp {
     public static void main(String[] args) {
-        SpringApplication.run(ShippingServiceApp.class, args);
+        SpringApplication.run(CartServiceApp.class, args);
     }
 }

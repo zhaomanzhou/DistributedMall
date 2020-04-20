@@ -6,7 +6,6 @@
         <artifactId>product-service</artifactId>
         <groupId>zmz</groupId>
         <version>2.0</version>
-        <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 

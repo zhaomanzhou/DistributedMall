@@ -79,13 +79,13 @@ public class ShippingController {
 
     @RequestMapping("/select")
     @ResponseBody
-    public ServerResponse<Shipping> select(Integer shippingId) throws BizException {
+    public ServerResponse<Shipping> select(Integer id) throws BizException {
         User user = (User) ThreadLoalCache.get(ContextConstant.USER);
 
         if(user ==null){
             return ServerResponse.error(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }
-        Shipping select = iShippingService.select(user.getId(), shippingId);
+        Shipping select = iShippingService.select(user.getId(), id);
         return ServerResponse.success(select);
 
     }

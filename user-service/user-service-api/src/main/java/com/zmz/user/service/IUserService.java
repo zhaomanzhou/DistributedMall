@@ -6,6 +6,10 @@ import com.zmz.user.entity.po.User;
 
 public interface IUserService {
 
+    /**
+     * 登陆，成功返回token，失败抛异常
+     * @throws BusinessException
+     */
     String login(String username, String password) throws BusinessException;
     User register(User user) throws BusinessException;
     User getUserByToken(String token);

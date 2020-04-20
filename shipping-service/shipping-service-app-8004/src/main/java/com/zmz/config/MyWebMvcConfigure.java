@@ -29,10 +29,10 @@ public class MyWebMvcConfigure implements WebMvcConfigurer
     @Override
     public void addInterceptors(InterceptorRegistry registry)
     {
-        registry.addInterceptor(loginInterceptor)
-                .addPathPatterns("/**")
-                .excludePathPatterns("/api/wxLogin")
-                .excludePathPatterns("/api/unlogin");
+//        registry.addInterceptor(loginInterceptor)
+//                .addPathPatterns("/**")
+//                .excludePathPatterns("/api/wxLogin")
+//                .excludePathPatterns("/api/unlogin");
 
     }
 }
