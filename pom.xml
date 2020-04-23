@@ -16,7 +16,8 @@
         <module>product-service</module>
         <module>shipping-service</module>
         <module>cart-service</module>
-<!--        <module>order-service</module>-->
+        <module>order-service</module>
+        <module>pay-service</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
