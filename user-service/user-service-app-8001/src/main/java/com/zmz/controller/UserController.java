@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user/")
-@Api(tags = "用户相关的api", description = "/user")
+@Api(tags = "用户相关的api")
 public class UserController {
 
 
@@ -41,7 +41,7 @@ public class UserController {
             @ApiImplicitParam(name = "username", value = "用户名", required = true,dataType = "String"),
             @ApiImplicitParam(name = "password", value = "密码",required = true,dataType = "String"),
     })
-    @RequestMapping(value = "login", method = RequestMethod.POST)
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ServerResponse<String> login(String username, String password) throws BusinessException {
         String token = userService.login(username, password);
         return ServerResponse.success(token);
@@ -50,7 +50,7 @@ public class UserController {
 
 
 
-    @RequestMapping(value = "register",method = RequestMethod.POST)
+    @RequestMapping(value = "/register",method = RequestMethod.POST)
     @ApiOperation("注册")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "username", value = "用户名", required = true,dataType = "String"),
@@ -68,7 +68,7 @@ public class UserController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "token", value = "token信息", required = true,dataType = "String"),
     })
-    @RequestMapping(value = "get_user_info",method = RequestMethod.POST)
+    @RequestMapping(value = "/get_user_info",method = RequestMethod.POST)
     public ServerResponse<User> getUserInfo(String token){
 
         User user = userService.getUserByToken(token);
@@ -88,7 +88,7 @@ public class UserController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "用户id", required = true,dataType = "Integer"),
     })
-    @GetMapping("/{id}")
+    @GetMapping("/detail/{id}")
     public ServerResponse<User> queryById(@PathVariable Integer id) throws BusinessException {
         User user = userService.selectUserById(id);
         return ServerResponse.success(user);
@@ -125,7 +125,7 @@ public class UserController {
         return ServerResponse.success();
     }
 
-    @RequestMapping(value = "update/",method = RequestMethod.POST)
+    @RequestMapping(value = "/update/",method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<User> update_information(User user) throws BusinessException {
         userService.updateInformation(user);

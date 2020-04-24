@@ -17,8 +17,7 @@
         <module>shipping-service</module>
         <module>cart-service</module>
         <module>order-service</module>
-        <module>pay-service</module>
-        <module>pay-service</module>
+
 
     </modules>
     <parent>
