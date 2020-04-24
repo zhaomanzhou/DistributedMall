@@ -10,9 +10,7 @@ import org.codehaus.jackson.type.JavaType;
 import org.codehaus.jackson.type.TypeReference;
 import java.text.SimpleDateFormat;
 
-/**
- * Created by geely
- */
+
 @Slf4j
 public class JsonUtil {
 

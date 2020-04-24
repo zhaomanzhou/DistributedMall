@@ -2,9 +2,7 @@ package com.zmz.entity.vo;
 
 import java.math.BigDecimal;
 
-/**
- * Created by geely
- */
+
 public class OrderItemVo {
 
     private Long orderNo;
