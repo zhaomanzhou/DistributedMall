@@ -199,16 +199,21 @@ public class CartServiceImpl implements ICartService {
 
 
 
+    @Override
+    public List<Cart> selectCheckedCartByUserId(Integer userId)
+    {
+        if(userId == null){
+            return null;
+        }
+        return cartMapper.selectCheckedCartByUserId(userId);
+    }
 
 
-
-
-
-
-
-
-
-
-
-
+    @Override
+    public void cleanCart(List<Cart> cartList)
+    {
+        for(Cart cart : cartList){
+            cartMapper.deleteByPrimaryKey(cart.getId());
+        }
+    }
 }

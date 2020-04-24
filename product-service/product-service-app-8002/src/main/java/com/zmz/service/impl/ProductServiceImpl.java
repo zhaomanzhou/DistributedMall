@@ -233,28 +233,11 @@ public class ProductServiceImpl implements IProductService {
     }
 
 
+    @Override
+    public Integer reduceStock(Integer productId, int reduceStock)
+    {
+        Integer res = productMapper.reduceStock(productId, reduceStock);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        return res;
+    }
 }

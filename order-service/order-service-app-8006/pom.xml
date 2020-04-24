@@ -13,6 +13,13 @@
     <artifactId>order-service-app-8006</artifactId>
     <dependencies>
 
+
+        <dependency>
+            <groupId>zmz</groupId>
+            <artifactId>shipping-service-api</artifactId>
+            <version>2.0</version>
+        </dependency>
+
         <dependency>
             <groupId>zmz</groupId>
             <artifactId>user-service-api</artifactId>
@@ -26,6 +33,24 @@
             <version>2.0</version>
         </dependency>
 
+
+        <dependency>
+            <groupId>zmz</groupId>
+            <artifactId>cart-service-api</artifactId>
+            <version>2.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>zmz</groupId>
+            <artifactId>product-service-api</artifactId>
+            <version>2.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>zmz</groupId>
+            <artifactId>shipping-service-api</artifactId>
+            <version>2.0</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -129,11 +154,7 @@
             <version>1.0.0</version>
         </dependency>
 
-        <dependency>
-            <groupId>zmz</groupId>
-            <artifactId>product-service-api</artifactId>
-            <version>2.0</version>
-        </dependency>
+
     </dependencies>
 
 </project>

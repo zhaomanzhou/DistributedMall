@@ -68,10 +68,9 @@ public class ShippingServiceImpl implements IShippingService {
         return pageInfo;
     }
 
-
-
-
-
-
-
+    @Override
+    public Shipping selectByPrimaryKey(Integer id)
+    {
+        return shippingMapper.selectByPrimaryKey(id);
+    }
 }

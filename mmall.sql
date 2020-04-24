@@ -1,15 +1,4 @@
-/*
- Navicat Premium Data Transfer
 
- Source Server Type    : MySQL
- Source Database       : mmall
-
- Target Server Type    : MySQL
- Target Server Version : 50173
- File Encoding         : utf-8
-
- Date: 04/13/2017 22:04:18 PM
-*/
 
 SET NAMES utf8;
 SET FOREIGN_KEY_CHECKS = 0;

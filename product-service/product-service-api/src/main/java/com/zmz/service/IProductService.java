@@ -23,6 +23,7 @@ public interface IProductService {
 
     PageInfo getProductByKeywordCategory(String keyword, Integer categoryId, int pageNum, int pageSize, String orderBy) throws BusinessException;
 
+    Integer reduceStock(Integer productId, int reduceStock);
 
 
 }

@@ -18,6 +18,8 @@
         <module>cart-service</module>
         <module>order-service</module>
         <module>pay-service</module>
+        <module>pay-service</module>
+
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

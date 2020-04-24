@@ -23,7 +23,7 @@
             <property name="forceBigDecimals" value="true" />
         </javaTypeResolver>
 
-        <javaModelGenerator targetPackage="zmz.entity.po" targetProject="src/main/java">
+        <javaModelGenerator targetPackage="zmz.com.zmz.entity.po" targetProject="src/main/java">
             <property name="enableSubPackages" value="true" />
             <property name="trimStrings" value="true" />
         </javaModelGenerator>
