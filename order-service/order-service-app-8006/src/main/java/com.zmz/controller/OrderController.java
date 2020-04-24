@@ -1,8 +1,12 @@
 package com.zmz.controller;
 
 
+import com.alipay.api.AlipayApiException;
+import com.alipay.api.internal.util.AlipaySignature;
+import com.alipay.demo.trade.config.Configs;
 import com.google.common.collect.Maps;
 
+import com.zmz.common.Const;
 import com.zmz.common.ContextConstant;
 import com.zmz.common.ResponseCode;
 import com.zmz.common.ThreadLoalCache;
@@ -110,27 +114,24 @@ public class OrderController {
 
 
 
-    @RequestMapping("pay.do")
+    @RequestMapping("/pay")
     @ResponseBody
-    public ServerResponse pay(HttpServletRequest httpServletRequest, Long orderNo, HttpServletRequest request){
+    public ServerResponse pay( Long orderNo, HttpServletRequest request) throws BizException
+    {
 
-        String loginToken = CookieUtil.readLoginToken(httpServletRequest);
-        if(StringUtils.isEmpty(loginToken)){
-            return ServerResponse.createByErrorMessage("用户未登录,无法获取当前用户的信息");
-        }
-        String userJsonStr = RedisShardedPoolUtil.get(loginToken);
-        User user = JsonUtil.string2Obj(userJsonStr,User.class);
+        User user = (User) ThreadLoalCache.get(ContextConstant.USER);
 
         if(user ==null){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
+            return ServerResponse.error(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }
         String path = request.getSession().getServletContext().getRealPath("upload");
-        return iOrderService.pay(orderNo,user.getId(),path);
+        return ServerResponse.success(iOrderService.pay(orderNo,user.getId(),path));
     }
 
-    @RequestMapping("alipay_callback.do")
+    @RequestMapping("/alipay_callback")
     @ResponseBody
-    public Object alipayCallback(HttpServletRequest request){
+    public Object alipayCallback(HttpServletRequest request)
+    {
         Map<String,String> params = Maps.newHashMap();
 
         Map requestParams = request.getParameterMap();
@@ -153,43 +154,42 @@ public class OrderController {
             boolean alipayRSACheckedV2 = AlipaySignature.rsaCheckV2(params, Configs.getAlipayPublicKey(),"utf-8",Configs.getSignType());
 
             if(!alipayRSACheckedV2){
-                return ServerResponse.createByErrorMessage("非法请求,验证不通过,再恶意请求我就报警找网警了");
+                throw new BizException("非法请求,验证不通过,再恶意请求我就报警找网警了");
             }
-        } catch (AlipayApiException e) {
+        } catch (AlipayApiException | BizException e) {
             log.error("支付宝验证回调异常",e);
         }
 
         //todo 验证各种数据
 
 
-        //
-        ServerResponse serverResponse = iOrderService.aliCallback(params);
-        if(serverResponse.isSuccess()){
-            return Const.AlipayCallback.RESPONSE_SUCCESS;
+        try
+        {
+            iOrderService.aliCallback(params);
+        } catch (BizException e)
+        {
+            log.warn("{}", e);
+            return Const.AlipayCallback.RESPONSE_FAILED;
         }
-        return Const.AlipayCallback.RESPONSE_FAILED;
+
+        return Const.AlipayCallback.RESPONSE_SUCCESS;
     }
 
 
     @RequestMapping("query_order_pay_status.do")
     @ResponseBody
     public ServerResponse<Boolean> queryOrderPayStatus(HttpServletRequest httpServletRequest, Long orderNo){
-        String loginToken = CookieUtil.readLoginToken(httpServletRequest);
-        if(StringUtils.isEmpty(loginToken)){
-            return ServerResponse.createByErrorMessage("用户未登录,无法获取当前用户的信息");
-        }
-        String userJsonStr = RedisShardedPoolUtil.get(loginToken);
-        User user = JsonUtil.string2Obj(userJsonStr,User.class);
+        User user = (User) ThreadLoalCache.get(ContextConstant.USER);
 
-        if(user ==null){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
+        try
+        {
+            iOrderService.queryOrderPayStatus(user.getId(),orderNo);
+        } catch (BizException | BusinessException e)
+        {
+            return ServerResponse.error();
         }
 
-        ServerResponse serverResponse = iOrderService.queryOrderPayStatus(user.getId(),orderNo);
-        if(serverResponse.isSuccess()){
-            return ServerResponse.createBySuccess(true);
-        }
-        return ServerResponse.createBySuccess(false);
+        return ServerResponse.success(false);
     }
 
 

@@ -2,6 +2,16 @@ package com.zmz.service.impl;
 
 
 import com.alibaba.nacos.client.naming.utils.CollectionUtils;
+import com.alipay.api.AlipayResponse;
+import com.alipay.api.response.AlipayTradePrecreateResponse;
+import com.alipay.demo.trade.config.Configs;
+import com.alipay.demo.trade.model.ExtendParams;
+import com.alipay.demo.trade.model.GoodsDetail;
+import com.alipay.demo.trade.model.builder.AlipayTradePrecreateRequestBuilder;
+import com.alipay.demo.trade.model.result.AlipayF2FPrecreateResult;
+import com.alipay.demo.trade.service.AlipayTradeService;
+import com.alipay.demo.trade.service.impl.AlipayTradeServiceImpl;
+import com.alipay.demo.trade.utils.ZxingUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
@@ -14,7 +24,6 @@ import com.zmz.exception.BusinessErrorEnum;
 import com.zmz.mapper.OrderItemMapper;
 import com.zmz.mapper.OrderMapper;
 import com.zmz.mapper.PayInfoMapper;
-import com.zmz.response.ServerResponse;
 import com.zmz.response.error.BizException;
 import com.zmz.response.error.BusinessException;
 import com.zmz.service.ICartService;
@@ -24,6 +33,7 @@ import com.zmz.service.IProductService;
 import com.zmz.service.IShippingService;
 import com.zmz.util.BigDecimalUtil;
 import com.zmz.util.DateTimeUtil;
+import com.zmz.util.FTPUtil;
 import com.zmz.util.PropertiesUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.dubbo.config.annotation.Reference;
@@ -35,10 +45,7 @@ import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 
 @Service("iOrderService")
@@ -46,7 +53,19 @@ public class OrderServiceImpl implements IOrderService
 {
 
 
+    private static AlipayTradeService tradeService;
+    static {
 
+        /** 一定要在创建AlipayTradeService之前调用Configs.init()设置默认参数
+         *  Configs会读取classpath下的zfbinfo.properties文件配置信息，如果找不到该文件则确认该文件是否在classpath目录
+         */
+        Configs.init("zfbinfo.properties");
+
+        /** 使用Configs提供的默认参数
+         *  AlipayTradeService可以使用单例或者为静态成员对象，不需要反复new
+         */
+        tradeService = new AlipayTradeServiceImpl.ClientBuilder().build();
+    }
 
     private static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
@@ -371,7 +390,7 @@ public class OrderServiceImpl implements IOrderService
 
 
 
-    public ServerResponse pay(Long orderNo,Integer userId,String path) throws BizException
+    public Map<String, String> pay(Long orderNo, Integer userId, String path) throws BizException
     {
         Map<String ,String> resultMap = Maps.newHashMap();
         Order order = orderMapper.selectByUserIdAndOrderNo(userId,orderNo);
@@ -476,18 +495,18 @@ public class OrderServiceImpl implements IOrderService
                 logger.info("qrPath:" + qrPath);
                 String qrUrl = PropertiesUtil.getProperty("ftp.server.http.prefix")+targetFile.getName();
                 resultMap.put("qrUrl",qrUrl);
-                return ServerResponse.createBySuccess(resultMap);
+                return resultMap;
             case FAILED:
                 logger.error("支付宝预下单失败!!!");
-                return ServerResponse.createByErrorMessage("支付宝预下单失败!!!");
+                throw new BizException("支付宝预下单失败!!!");
 
             case UNKNOWN:
                 logger.error("系统异常，预下单状态未知!!!");
-                return ServerResponse.createByErrorMessage("系统异常，预下单状态未知!!!");
+                throw new BizException("系统异常，预下单状态未知!!!");
 
             default:
                 logger.error("不支持的交易状态，交易返回异常!!!");
-                return ServerResponse.createByErrorMessage("不支持的交易状态，交易返回异常!!!");
+                throw new BizException("不支持的交易状态，交易返回异常!!!");
         }
 
     }
@@ -505,16 +524,17 @@ public class OrderServiceImpl implements IOrderService
     }
 
 
-    public ServerResponse aliCallback(Map<String,String> params){
+    public void aliCallback(Map<String,String> params) throws BizException
+    {
         Long orderNo = Long.parseLong(params.get("out_trade_no"));
         String tradeNo = params.get("trade_no");
         String tradeStatus = params.get("trade_status");
         Order order = orderMapper.selectByOrderNo(orderNo);
         if(order == null){
-            return ServerResponse.createByErrorMessage("非快乐慕商城的订单,回调忽略");
+            throw new BizException("非本商城的订单,回调忽略");
         }
         if(order.getStatus() >= Const.OrderStatusEnum.PAID.getCode()){
-            return ServerResponse.createBySuccess("支付宝重复调用");
+            return;
         }
         if(Const.AlipayCallback.TRADE_STATUS_TRADE_SUCCESS.equals(tradeStatus)){
             order.setPaymentTime(DateTimeUtil.strToDate(params.get("gmt_payment")));
@@ -531,22 +551,23 @@ public class OrderServiceImpl implements IOrderService
 
         payInfoMapper.insert(payInfo);
 
-        return ServerResponse.createBySuccess();
+        return;
     }
 
 
 
 
 
-    public ServerResponse queryOrderPayStatus(Integer userId,Long orderNo){
+    public void queryOrderPayStatus(Integer userId, Long orderNo) throws BizException, BusinessException
+    {
         Order order = orderMapper.selectByUserIdAndOrderNo(userId,orderNo);
         if(order == null){
-            return ServerResponse.createByErrorMessage("用户没有该订单");
+            throw new BizException("用户没有该订单");
         }
         if(order.getStatus() >= Const.OrderStatusEnum.PAID.getCode()){
-            return ServerResponse.createBySuccess();
+            return;
         }
-        return ServerResponse.createByError();
+        throw new BusinessException(BusinessErrorEnum.UNKNOWN_ERROR);
     }
 
 
@@ -564,29 +585,31 @@ public class OrderServiceImpl implements IOrderService
 
     //backend
 
-    public ServerResponse<PageInfo> manageList(int pageNum,int pageSize){
+    public PageInfo manageList(int pageNum, int pageSize){
         PageHelper.startPage(pageNum,pageSize);
         List<Order> orderList = orderMapper.selectAllOrder();
         List<OrderVo> orderVoList = this.assembleOrderVoList(orderList,null);
         PageInfo pageResult = new PageInfo(orderList);
         pageResult.setList(orderVoList);
-        return ServerResponse.createBySuccess(pageResult);
+        return pageResult;
     }
 
 
-    public ServerResponse<OrderVo> manageDetail(Long orderNo){
+    public OrderVo manageDetail(Long orderNo) throws BizException
+    {
         Order order = orderMapper.selectByOrderNo(orderNo);
         if(order != null){
             List<OrderItem> orderItemList = orderItemMapper.getByOrderNo(orderNo);
             OrderVo orderVo = assembleOrderVo(order,orderItemList);
-            return ServerResponse.createBySuccess(orderVo);
+            return orderVo;
         }
-        return ServerResponse.createByErrorMessage("订单不存在");
+        throw new BizException("订单不存在");
     }
 
 
 
-    public ServerResponse<PageInfo> manageSearch(Long orderNo,int pageNum,int pageSize){
+    public PageInfo manageSearch(Long orderNo, int pageNum, int pageSize) throws BizException
+    {
         PageHelper.startPage(pageNum,pageSize);
         Order order = orderMapper.selectByOrderNo(orderNo);
         if(order != null){
@@ -595,23 +618,24 @@ public class OrderServiceImpl implements IOrderService
 
             PageInfo pageResult = new PageInfo(Lists.newArrayList(order));
             pageResult.setList(Lists.newArrayList(orderVo));
-            return ServerResponse.createBySuccess(pageResult);
+            return pageResult;
         }
-        return ServerResponse.createByErrorMessage("订单不存在");
+        throw new BizException("订单不存在");
     }
 
 
-    public ServerResponse<String> manageSendGoods(Long orderNo){
+    public String manageSendGoods(Long orderNo) throws BizException
+    {
         Order order= orderMapper.selectByOrderNo(orderNo);
         if(order != null){
             if(order.getStatus() == Const.OrderStatusEnum.PAID.getCode()){
                 order.setStatus(Const.OrderStatusEnum.SHIPPED.getCode());
                 order.setSendTime(new Date());
                 orderMapper.updateByPrimaryKeySelective(order);
-                return ServerResponse.createBySuccess("发货成功");
+                return "发货成功";
             }
         }
-        return ServerResponse.createByErrorMessage("订单不存在");
+        throw new BizException("订单不存在");
     }
 
 
