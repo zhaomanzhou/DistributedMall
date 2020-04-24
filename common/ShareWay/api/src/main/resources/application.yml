@@ -1,0 +1,17 @@
+server:
+  port: 80
+
+
+project:
+  imageslocation: classpath:/images/
+
+spring:
+
+  profiles:
+    active: dev
+    include: mapper
+
+token:
+  secret: nwafu
+  # 单位 分钟
+  expiration: 30

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_shareway" default="compile.module.shareway">
+  <dirname property="module.shareway.basedir" file="${ant.file.module_shareway}"/>
+  
+  <property name="module.jdk.home.shareway" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.shareway" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.shareway" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.shareway" value="-encoding UTF-8 -source 8 -target 1.8 ${compiler.args}"/>
+  
+  <property name="shareway.output.dir" value="${module.shareway.basedir}/target/classes"/>
+  <property name="shareway.testoutput.dir" value="${module.shareway.basedir}/target/test-classes"/>
+  
+  <path id="shareway.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="shareway.module.production.classpath">
+    <path refid="${module.jdk.classpath.shareway}"/>
+  </path>
+  
+  <path id="shareway.runtime.production.module.classpath">
+    <pathelement location="${shareway.output.dir}"/>
+  </path>
+  
+  <path id="shareway.module.classpath">
+    <path refid="${module.jdk.classpath.shareway}"/>
+    <pathelement location="${shareway.output.dir}"/>
+  </path>
+  
+  <path id="shareway.runtime.module.classpath">
+    <pathelement location="${shareway.testoutput.dir}"/>
+    <pathelement location="${shareway.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.shareway">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.shareway">
+    <patternset refid="excluded.from.module.shareway"/>
+  </patternset>
+  
+  <path id="shareway.module.sourcepath">
+    <dirset dir="${module.shareway.basedir}">
+      <include name="src/main/java"/>
+      <include name="src/main/resources"/>
+    </dirset>
+  </path>
+  
+  <path id="shareway.module.test.sourcepath">
+    <dirset dir="${module.shareway.basedir}">
+      <include name="src/test/java"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.shareway" depends="compile.module.shareway.production,compile.module.shareway.tests" description="Compile module ShareWay"/>
+  
+  <target name="compile.module.shareway.production" depends="register.custom.compilers" description="Compile module ShareWay; production classes">
+    <mkdir dir="${shareway.output.dir}"/>
+    <javac2 destdir="${shareway.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.shareway}/javac">
+      <compilerarg line="${compiler.args.shareway}"/>
+      <bootclasspath refid="shareway.module.bootclasspath"/>
+      <classpath refid="shareway.module.production.classpath"/>
+      <src refid="shareway.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.shareway"/>
+    </javac2>
+    
+    <copy todir="${shareway.output.dir}">
+      <fileset dir="${module.shareway.basedir}/src/main/java">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="${module.shareway.basedir}/src/main/resources">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.shareway.tests" depends="register.custom.compilers,compile.module.shareway.production" description="compile module ShareWay; test classes" unless="skip.tests">
+    <mkdir dir="${shareway.testoutput.dir}"/>
+    <javac2 destdir="${shareway.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.shareway}/javac">
+      <compilerarg line="${compiler.args.shareway}"/>
+      <bootclasspath refid="shareway.module.bootclasspath"/>
+      <classpath refid="shareway.module.classpath"/>
+      <src refid="shareway.module.test.sourcepath"/>
+      <patternset refid="excluded.from.compilation.shareway"/>
+    </javac2>
+    
+    <copy todir="${shareway.testoutput.dir}">
+      <fileset dir="${module.shareway.basedir}/src/test/java">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="clean.module.shareway" description="cleanup module">
+    <delete dir="${shareway.output.dir}"/>
+    <delete dir="${shareway.testoutput.dir}"/>
+  </target>
+</project>
