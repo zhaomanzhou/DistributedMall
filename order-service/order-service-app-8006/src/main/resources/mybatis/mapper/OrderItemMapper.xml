@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.zmz.mapper.OrderItemMapper" >
-  <resultMap id="BaseResultMap" type="com.zmz.com.zmz.entity.po.OrderItem" >
+  <resultMap id="BaseResultMap" type="com.zmz.entity.po.OrderItem" >
     <constructor >
       <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="order_no" jdbcType="BIGINT" javaType="java.lang.Long" />
@@ -30,7 +30,7 @@
     delete from mmall_order_item
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.zmz.com.zmz.entity.po.OrderItem" >
+  <insert id="insert" parameterType="com.zmz.entity.po.OrderItem" >
     insert into mmall_order_item (id, order_no, product_id, 
       product_name, product_image, current_unit_price, 
       quantity, total_price, create_time, 
@@ -40,7 +40,7 @@
       #{quantity,jdbcType=INTEGER}, #{totalPrice,jdbcType=DECIMAL}, now(),
       now(), #{userId,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.zmz.com.zmz.entity.po.OrderItem" >
+  <insert id="insertSelective" parameterType="com.zmz.entity.po.OrderItem" >
     insert into mmall_order_item
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -113,7 +113,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.zmz.com.zmz.entity.po.OrderItem" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.zmz.entity.po.OrderItem" >
     update mmall_order_item
     <set >
       <if test="orderNo != null" >
@@ -149,7 +149,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.zmz.com.zmz.entity.po.OrderItem" >
+  <update id="updateByPrimaryKey" parameterType="com.zmz.entity.po.OrderItem" >
     update mmall_order_item
     set order_no = #{orderNo,jdbcType=BIGINT},
       product_id = #{productId,jdbcType=INTEGER},

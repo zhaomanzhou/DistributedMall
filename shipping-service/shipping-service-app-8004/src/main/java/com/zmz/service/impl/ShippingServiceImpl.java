@@ -7,14 +7,16 @@ import com.zmz.entity.po.Shipping;
 import com.zmz.mapper.ShippingMapper;
 import com.zmz.response.error.BizException;
 import com.zmz.service.IShippingService;
-import org.springframework.stereotype.Service;
+import org.apache.dubbo.config.annotation.Service;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
 
-@Service("iShippingService")
+@Component("iShippingService")
+@Service
 public class ShippingServiceImpl implements IShippingService {
 
 

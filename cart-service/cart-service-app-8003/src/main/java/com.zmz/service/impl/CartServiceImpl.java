@@ -29,6 +29,7 @@ import java.util.List;
 
 
 @Service("iCartService")
+@org.apache.dubbo.config.annotation.Service
 public class CartServiceImpl implements ICartService {
 
     @Resource

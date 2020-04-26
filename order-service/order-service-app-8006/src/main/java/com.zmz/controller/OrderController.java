@@ -16,7 +16,6 @@ import com.zmz.response.error.BusinessException;
 import com.zmz.service.IOrderService;
 import com.zmz.user.entity.po.User;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -72,7 +71,7 @@ public class OrderController {
 
 
 
-    @RequestMapping("detail.do")
+    @RequestMapping("/detail")
     @ResponseBody
     public ServerResponse detail(Long orderNo) throws BizException
     {

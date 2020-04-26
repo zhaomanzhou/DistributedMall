@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.zmz.mapper.ShippingMapper" >
-  <resultMap id="BaseResultMap" type="com.zmz.com.zmz.entity.po.Shipping" >
+  <resultMap id="BaseResultMap" type="com.zmz.entity.po.Shipping" >
     <constructor >
       <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
@@ -31,7 +31,7 @@
     delete from mmall_shipping
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.zmz.com.zmz.entity.po.Shipping" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insert" parameterType="com.zmz.entity.po.Shipping" useGeneratedKeys="true" keyProperty="id">
     insert into mmall_shipping (id, user_id, receiver_name, 
       receiver_phone, receiver_mobile, receiver_province, 
       receiver_city, receiver_district, receiver_address, 
@@ -43,7 +43,7 @@
       #{receiverZip,jdbcType=VARCHAR}, now(), now()
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.zmz.com.zmz.entity.po.Shipping" >
+  <insert id="insertSelective" parameterType="com.zmz.entity.po.Shipping" >
     insert into mmall_shipping
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -122,7 +122,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.zmz.com.zmz.entity.po.Shipping" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.zmz.entity.po.Shipping" >
     update mmall_shipping
     <set >
       <if test="userId != null" >
@@ -161,7 +161,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.zmz.com.zmz.entity.po.Shipping" >
+  <update id="updateByPrimaryKey" parameterType="com.zmz.entity.po.Shipping" >
     update mmall_shipping
     set user_id = #{userId,jdbcType=INTEGER},
       receiver_name = #{receiverName,jdbcType=VARCHAR},
@@ -183,7 +183,7 @@
     and user_id = #{userId}
   </delete>
 
-  <update id="updateByShipping" parameterType="com.zmz.com.zmz.entity.po.Shipping">
+  <update id="updateByShipping" parameterType="com.zmz.entity.po.Shipping">
     update mmall_shipping
     set
       receiver_name = #{receiverName,jdbcType=VARCHAR},

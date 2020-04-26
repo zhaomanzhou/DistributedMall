@@ -40,6 +40,7 @@ import org.apache.dubbo.config.annotation.Reference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.io.File;
@@ -59,12 +60,12 @@ public class OrderServiceImpl implements IOrderService
         /** 一定要在创建AlipayTradeService之前调用Configs.init()设置默认参数
          *  Configs会读取classpath下的zfbinfo.properties文件配置信息，如果找不到该文件则确认该文件是否在classpath目录
          */
-        Configs.init("zfbinfo.properties");
+        //Configs.init("zfbinfo.properties");
 
         /** 使用Configs提供的默认参数
          *  AlipayTradeService可以使用单例或者为静态成员对象，不需要反复new
          */
-        tradeService = new AlipayTradeServiceImpl.ClientBuilder().build();
+        // tradeService = new AlipayTradeServiceImpl.ClientBuilder().build();
     }
 
     private static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
@@ -88,6 +89,7 @@ public class OrderServiceImpl implements IOrderService
 
 
 
+    @Transactional
     public OrderVo createOrder(Integer userId, Integer shippingId) throws BizException, BusinessException
     {
 
@@ -151,7 +153,7 @@ public class OrderServiceImpl implements IOrderService
         orderVo.setCloseTime(DateTimeUtil.dateToStr(order.getCloseTime()));
 
 
-        orderVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix"));
+        //orderVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix"));
 
 
         List<OrderItemVo> orderItemVoList = Lists.newArrayList();
@@ -326,7 +328,7 @@ public class OrderServiceImpl implements IOrderService
         }
         orderProductVo.setProductTotalPrice(payment);
         orderProductVo.setOrderItemVoList(orderItemVoList);
-        orderProductVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix"));
+        //orderProductVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix"));
         return orderProductVo;
     }
 

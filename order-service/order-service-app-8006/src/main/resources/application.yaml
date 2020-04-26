@@ -1,5 +1,5 @@
 server:
-  port: 8004
+  port: 8006
 logging:
   level.root: info
 
@@ -25,6 +25,9 @@ spring:
     # 解决Bean重复定义问题
     allow-bean-definition-overriding: true
 dubbo:
+  protocol:
+    name: dubbo
+    port: 20006
   # 配置注册中心
   registry:
     address: nacos://zmz121.cn:8848?namespace=f678b632-7899-4a2d-acd7-8c7c3394b573

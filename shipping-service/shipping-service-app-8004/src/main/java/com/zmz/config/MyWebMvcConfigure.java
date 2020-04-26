@@ -15,24 +15,17 @@ public class MyWebMvcConfigure implements WebMvcConfigurer
     @Resource
     private LoginInterceptor loginInterceptor;
 
-//    @Value("${project.imageslocation}")
-//    private String imagesLocation;
-//
-//    @Override
-//    public void addResourceHandlers(ResourceHandlerRegistry registry)
-//    {
-//        registry.addResourceHandler("/images/**")
-//                .addResourceLocations(imagesLocation);
-//    }
+
 
     //注册拦截器
     @Override
     public void addInterceptors(InterceptorRegistry registry)
     {
-//        registry.addInterceptor(loginInterceptor)
-//                .addPathPatterns("/**")
-//                .excludePathPatterns("/api/wxLogin")
-//                .excludePathPatterns("/api/unlogin");
+        registry.addInterceptor(loginInterceptor)
+                .addPathPatterns("/**")
+                .excludePathPatterns("/api/unlogin");
+
+
 
     }
 }

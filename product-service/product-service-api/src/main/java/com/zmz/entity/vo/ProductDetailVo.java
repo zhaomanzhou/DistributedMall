@@ -2,10 +2,12 @@ package com.zmz.entity.vo;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Data
-public class ProductDetailVo {
+public class ProductDetailVo implements Serializable
+{
 
     private Integer  id;
     private Integer categoryId;
