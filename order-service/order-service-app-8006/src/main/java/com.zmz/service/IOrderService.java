@@ -15,12 +15,11 @@ public interface IOrderService {
     void aliCallback(Map<String,String> params) throws BizException;
     void queryOrderPayStatus(Integer userId, Long orderNo) throws BizException, BusinessException;
     OrderVo createOrder(Integer userId, Integer shippingId) throws BizException, BusinessException;
+
     void cancel(Integer userId, Long orderNo) throws BizException, BusinessException;
     OrderProductVo getOrderCartProduct(Integer userId) throws BizException, BusinessException;
     OrderVo getOrderDetail(Integer userId, Long orderNo) throws BizException;
     PageInfo getOrderList(Integer userId, int pageNum, int pageSize);
-
-
 
     //backend
     PageInfo manageList(int pageNum, int pageSize);

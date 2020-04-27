@@ -21,11 +21,15 @@ import com.zmz.util.PropertiesUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @Component("iProductService")
@@ -39,7 +43,13 @@ public class ProductServiceImpl implements IProductService {
     private CategoryMapper categoryMapper;
 
     @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
+
+    @Autowired
     private ICategoryService iCategoryService;
+
+    @Value("${product.expiration}")
+    private Long productExpiration;
 
     public void saveOrUpdateProduct(Product product) throws BizException {
         if(product != null)
@@ -174,13 +184,18 @@ public class ProductServiceImpl implements IProductService {
     }
 
 
+    @Cacheable(cacheNames="books", key="#productId")
     public ProductDetailVo getProductDetail(Integer productId) throws BusinessException, BizException {
         if(productId == null){
             throw new BusinessException(BusinessErrorEnum.PARAMETER_EMPTY_ERROR);
         }
-        Product product = productMapper.selectByPrimaryKey(productId);
-        if(product == null){
-            throw new BizException("产品已下架或者删除");
+
+        Product product = (Product) redisTemplate.opsForValue().get("product_" + productId);
+        if(product == null)
+        {
+            product = productMapper.selectByPrimaryKey(productId);
+            redisTemplate.opsForValue().set("product_" + productId, product);
+            redisTemplate.expire("product_" + productId, productExpiration, TimeUnit.MINUTES);
         }
         if(product.getStatus() != Const.ProductStatusEnum.ON_SALE.getCode()){
             throw new BizException("产品已下架或者删除");
@@ -237,7 +252,12 @@ public class ProductServiceImpl implements IProductService {
     public Integer reduceStock(Integer productId, int reduceStock)
     {
         Integer res = productMapper.reduceStock(productId, reduceStock);
-
         return res;
+    }
+
+    @Override
+    public List<Product> selectList()
+    {
+        return productMapper.selectList();
     }
 }

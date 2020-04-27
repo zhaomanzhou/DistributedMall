@@ -23,7 +23,7 @@
   </sql>
 
   <update id="reduceStock">
-    update mmall.mmall_product set stock = #{stock}
+    update mmall.mmall_product set stock = stock - #{stock}
     where id = #{id}
   </update>
 

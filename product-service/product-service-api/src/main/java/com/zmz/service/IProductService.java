@@ -6,6 +6,8 @@ import com.zmz.entity.vo.ProductDetailVo;
 import com.zmz.response.error.BizException;
 import com.zmz.response.error.BusinessException;
 
+import java.util.List;
+
 
 public interface IProductService {
 
@@ -24,6 +26,8 @@ public interface IProductService {
     PageInfo getProductByKeywordCategory(String keyword, Integer categoryId, int pageNum, int pageSize, String orderBy) throws BusinessException;
 
     Integer reduceStock(Integer productId, int reduceStock);
+
+    List<Product> selectList();
 
 
 }

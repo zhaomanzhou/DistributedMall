@@ -22,15 +22,14 @@ import com.zmz.entity.po.*;
 import com.zmz.entity.vo.*;
 import com.zmz.exception.BusinessErrorEnum;
 import com.zmz.mapper.OrderItemMapper;
+import com.zmz.mapper.OrderLogMapper;
 import com.zmz.mapper.OrderMapper;
 import com.zmz.mapper.PayInfoMapper;
+import com.zmz.mq.MqProducer;
 import com.zmz.response.error.BizException;
 import com.zmz.response.error.BusinessException;
-import com.zmz.service.ICartService;
-import com.zmz.service.IOrderService;
+import com.zmz.service.*;
 
-import com.zmz.service.IProductService;
-import com.zmz.service.IShippingService;
 import com.zmz.util.BigDecimalUtil;
 import com.zmz.util.DateTimeUtil;
 import com.zmz.util.FTPUtil;
@@ -39,6 +38,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.dubbo.config.annotation.Reference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -86,7 +87,15 @@ public class OrderServiceImpl implements IOrderService
     @Reference
     private IShippingService shippingService;
 
+    @Autowired
+    private MqProducer mqProducer;
 
+
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
+
+    @Resource
+    private OrderLogMapper orderLogMapper;
 
 
     @Transactional
@@ -100,31 +109,45 @@ public class OrderServiceImpl implements IOrderService
 
         //计算这个订单的总价
         List<OrderItem> orderItemList = this.getCartOrderItem(userId, cartList);
+//
+//
+//        BigDecimal payment = this.getOrderTotalPrice(orderItemList);
+//
+//
+//        //生成订单
+//        Order order = this.assembleOrder(userId,shippingId,payment);
+//
+//
+//        for(OrderItem orderItem : orderItemList){
+//            orderItem.setOrderNo(order.getOrderNo());
+//        }
+//        //mybatis 批量插入
+//        orderItemMapper.batchInsert(orderItemList);
+//
+//        //生成成功,我们要减少我们产品的库存
+//        this.reduceProductStock(orderItemList);
 
-
-        BigDecimal payment = this.getOrderTotalPrice(orderItemList);
-
-
-        //生成订单
-        Order order = this.assembleOrder(userId,shippingId,payment);
-
-
-        for(OrderItem orderItem : orderItemList){
-            orderItem.setOrderNo(order.getOrderNo());
+        OrderLog log = new OrderLog();
+        log.setId(UUID.randomUUID().toString());
+        orderLogMapper.insert(log);
+        boolean b = mqProducer.transactionAsyncReduceStock(userId, shippingId, orderItemList, log.getId());
+        if(!b)
+        {
+            throw new BusinessException(BusinessErrorEnum.UNKNOWN_ERROR);
         }
-        //mybatis 批量插入
-        orderItemMapper.batchInsert(orderItemList);
 
-        //生成成功,我们要减少我们产品的库存
-        this.reduceProductStock(orderItemList);
+
         //清空一下购物车
-        this.cleanCart(cartList);
+        mqProducer.sendCleanCartMessage(userId);
 
         //返回给前端数据
 
-        OrderVo orderVo = assembleOrderVo(order,orderItemList);
+        //TODO 把order带出来
+        OrderVo orderVo = assembleOrderVo(null,orderItemList);
         return orderVo;
     }
+
+
 
 
 
@@ -210,8 +233,23 @@ public class OrderServiceImpl implements IOrderService
         }
     }
 
+    private boolean preReduceProductStock(List<OrderItem> orderItemList) throws BizException, BusinessException
+    {
+        for(OrderItem orderItem : orderItemList){
+            ProductDetailVo productDetail = productService.getProductDetail(orderItem.getProductId());
+            Long result = redisTemplate.opsForValue().decrement("product_stock" + productDetail.getId(), productDetail.getStock() - orderItem.getQuantity());
+            if(result > 0){
+                return true;
+            }else {
+                return false;
+            }
+        }
 
-    private Order assembleOrder(Integer userId,Integer shippingId,BigDecimal payment) throws BizException
+        return true;
+    }
+
+
+    public Order assembleOrder(Integer userId,Integer shippingId,BigDecimal payment) throws BizException
     {
         Order order = new Order();
         long orderNo = this.generateOrderNo();
@@ -240,7 +278,7 @@ public class OrderServiceImpl implements IOrderService
 
 
 
-    private BigDecimal getOrderTotalPrice(List<OrderItem> orderItemList){
+    public BigDecimal getOrderTotalPrice(List<OrderItem> orderItemList){
         BigDecimal payment = new BigDecimal("0");
         for(OrderItem orderItem : orderItemList){
             payment = BigDecimalUtil.add(payment.doubleValue(),orderItem.getTotalPrice().doubleValue());
@@ -249,7 +287,7 @@ public class OrderServiceImpl implements IOrderService
     }
 
 
-    private List<OrderItem> getCartOrderItem(Integer userId,List<Cart> cartList) throws BizException, BusinessException
+    public List<OrderItem> getCartOrderItem(Integer userId,List<Cart> cartList) throws BizException, BusinessException
     {
         List<OrderItem> orderItemList = Lists.newArrayList();
         if(CollectionUtils.isEmpty(cartList)){

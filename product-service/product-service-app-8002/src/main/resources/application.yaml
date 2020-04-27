@@ -42,10 +42,12 @@ token:
   # 单位 分钟
   expiration: 30
 
-
+product:
+  expiration: 30
 
 
 
 mybatis:
   config-location: classpath:mybatis/mybatis-config.xml
   mapper-locations: classpath:mybatis/mapper/*.xml
+
